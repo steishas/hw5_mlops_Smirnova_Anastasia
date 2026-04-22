@@ -1,0 +1,24 @@
+stages:
+  prepare:
+    cmd: python src/prepare.py
+    deps:
+    - data/raw/iris.csv
+    - src/prepare.py
+    params:
+    - prepare.random_state
+    - prepare.split_ratio
+    outs:
+    - data/processed/test.csv
+    - data/processed/train.csv
+  train:
+    cmd: python src/train.py
+    deps:
+    - data/processed/train.csv
+    - src/train.py
+    params:
+    - train.model_type
+    - train.n_estimators
+    outs:
+    - models/model.pkl
+    metrics:
+    - metrics.json
