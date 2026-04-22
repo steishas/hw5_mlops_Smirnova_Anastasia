@@ -1,0 +1,130 @@
+
+services:
+  # ------------------------- Слой 1: Приём и оркестрация -------------------------
+  video-api:
+    container_name: video_api
+    depends_on:
+      - kafka
+    labels:
+      "docker_compose_diagram.cluster": "Приём и оркестрация"
+      "docker_compose_diagram.icon": "diagrams.onprem.compute.Server"
+      "docker_compose_diagram.description": "REST API для загрузки видеофайлов"
+
+  kafka:
+    container_name: kafka_broker
+    labels:
+      "docker_compose_diagram.cluster": "Приём и оркестрация"
+      "docker_compose_diagram.icon": "diagrams.onprem.queue.Kafka"
+      "docker_compose_diagram.description": "Очередь сообщений\n для асинхронной \nобработки кадров"
+
+  airflow:
+    container_name: airflow_scheduler
+    depends_on:
+      - kafka
+    labels:
+      "docker_compose_diagram.cluster": "Приём и оркестрация"
+      "docker_compose_diagram.icon": "diagrams.onprem.workflow.Airflow"
+      "docker_compose_diagram.description": "Оркестрация\n пайплайна обработки"
+
+  # ------------------------- Слой 2: Обработка видео -------------------------
+  frame-splitter:
+    container_name: frame_splitter
+    depends_on:
+      - kafka
+    labels:
+      "docker_compose_diagram.cluster": "Обработка видео"
+      "docker_compose_diagram.icon": "diagrams.onprem.compute.Server"
+      "docker_compose_diagram.description": "Разбивка видео \nна отдельные кадры"
+
+  face-detector:
+    container_name: face_detector
+    depends_on:
+      - frame-splitter
+    labels:
+      "docker_compose_diagram.cluster": "Обработка видео"
+      "docker_compose_diagram.icon": "diagrams.programming.language.Python"
+      "docker_compose_diagram.description": "Детекция лиц \n(Haar Cascade / MTCNN)"
+
+  blur-processor:
+    container_name: blur_processor
+    depends_on:
+      - face-detector
+    labels:
+      "docker_compose_diagram.cluster": "Обработка видео"
+      "docker_compose_diagram.icon": "diagrams.programming.language.Python"
+      "docker_compose_diagram.description": "Наложение мозаики \n/ блюра на лица"
+
+  frame-merger:
+    container_name: frame_merger
+    depends_on:
+      - blur-processor
+    labels:
+      "docker_compose_diagram.cluster": "Обработка видео"
+      "docker_compose_diagram.icon": "diagrams.onprem.compute.Server"
+      "docker_compose_diagram.description": "Сборка обработанных \nкадров в видео"
+
+  # -------------------------  Слой 3: Хранение и Feature Store ------------------------- 
+  minio-storage:
+    container_name: minio_storage
+    depends_on:
+      - frame-merger
+    labels:
+      "docker_compose_diagram.cluster": "Хранение и Feature Store"
+      "docker_compose_diagram.icon": "diagrams.aws.storage.S3"
+      "docker_compose_diagram.description": "Хранение оригинальных и обработанных видео"
+
+  postgres-feast:
+    container_name: postgres_feast
+    labels:
+      "docker_compose_diagram.cluster": "Хранение и Feature Store"
+      "docker_compose_diagram.icon": "diagrams.onprem.database.PostgreSQL"
+      "docker_compose_diagram.description": "Online-хранилище Feast\n для признаков"
+
+  feast-registry:
+    container_name: feast_registry
+    depends_on:
+      - postgres-feast
+    labels:
+      "docker_compose_diagram.cluster": "Хранение и Feature Store"
+      "docker_compose_diagram.icon": "diagrams.onprem.database.PostgreSQL"
+      "docker_compose_diagram.description": "Реестр признаков \n(Feature Registry)"
+
+  # ------------------------- Слой 4: MLOps и мониторинг -------------------------
+  mlflow-server:
+    container_name: mlflow_server
+    depends_on:
+      - blur-processor
+    labels:
+      "docker_compose_diagram.cluster": "MLOps и мониторинг"
+      "docker_compose_diagram.icon": "diagrams.onprem.monitoring.Prometheus"
+      "docker_compose_diagram.description": "Трекинг экспериментов, параметров и метрик"
+
+  dvc-storage:
+    container_name: dvc_storage
+    labels:
+      "docker_compose_diagram.cluster": "MLOps и мониторинг"
+      "docker_compose_diagram.icon": "diagrams.aws.storage.S3"
+      "docker_compose_diagram.description": "Версионирование данных и моделей (DVC)"
+
+  # --------------------------  Слой 5: Доставка результата -------------------------
+  output-notifier:
+    container_name: output_notifier
+    depends_on:
+      - minio-storage
+    labels:
+      "docker_compose_diagram.cluster": "Доставка результата"
+      "docker_compose_diagram.icon": "diagrams.onprem.client.User"
+      "docker_compose_diagram.description": "Уведомление о готовности обработанного видео"
+
+  video-download-api:
+    container_name: video_download_api
+    depends_on:
+      - minio-storage
+    labels:
+      "docker_compose_diagram.cluster": "Доставка результата"
+      "docker_compose_diagram.icon": "diagrams.onprem.compute.Server"
+      "docker_compose_diagram.description": "API для скачивания обработанного видео"
+
+networks:
+  ml_network:
+    driver: bridge

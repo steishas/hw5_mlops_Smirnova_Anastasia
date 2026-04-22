@@ -1,0 +1,15 @@
+---
+project: hw5_face_blur
+registry: data/registry.db
+provider: local
+online_store:
+    type: postgres
+    host: localhost
+    port: 8000
+    database: postgres
+    db_schema: public
+    user: postgres
+    password: mysecretpassword
+    sslmode: disable
+offline_store:
+    type: file

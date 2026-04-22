@@ -1,0 +1,79 @@
+# -------------- Виртуальное окружение --------------
+venv/
+hw5_mlops/
+env/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+
+# ------------------- Python -------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+
+# -------------- Данные -----------------------------
+data/raw/*.csv
+data/raw/*.data
+data/processed/
+data/interim/
+
+# -------------- Модели -----------------------------
+models/
+*.pkl
+*.joblib
+*.h5
+*.pb
+
+# -------------- MLflow --------------
+mlruns/
+mlflow.db
+mlflow_artifacts/
+
+# -------------- Feast --------------
+feature_repo/feature_repo/data/registry.db
+feature_repo/feature_repo/*.db
+
+# -------------- Jupyter --------------
+.ipynb_checkpoints/
+*.ipynb
+.jupyter/
+
+# -------------- macOS --------------
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# -------------- IDE --------------
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# -------------- Логи --------------
+*.log
+logs/
+
+# --------------Временные файлы --------------
+*.tmp
+*.temp
+*.cache
+.pytest_cache/
+.mypy_cache/
+
+# Feast data
+feature_repo/feature_repo/data/*.parquet
+
+# Metrics
+metrics.json
+
+# Temp files
+ml_system_for_face_blurring
