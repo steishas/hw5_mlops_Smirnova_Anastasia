@@ -196,9 +196,9 @@ offline_store:
 **Валидация и применение**
 
 ```bash
-cd feature_repo/feature_repo
-yamllint feature_store.yaml  # 0 errors
-feast apply                  # Успешно применено
+cd feature_repo
+yamllint feature_store.yaml
+feast apply
 ```
 
 **PostgreSQL (Docker)**
