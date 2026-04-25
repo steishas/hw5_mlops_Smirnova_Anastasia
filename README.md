@@ -179,7 +179,7 @@ Data and pipelines are up to date.
 **Конфигурация (feature_store.yaml)**
 
 ```yaml
-project: hw5_face_blur
+project: hw5_iris_feature_store
 registry: data/registry.db
 provider: local
 online_store:
