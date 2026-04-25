@@ -166,7 +166,7 @@ Train: 120, Test: 30
 
 Running stage 'train':
 > python src/train.py
-Accuracy: 1.0000
+Accuracy: 0.9
 
 Data and pipelines are up to date.
 ```
