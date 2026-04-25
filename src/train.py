@@ -8,6 +8,10 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, classification_report
 from pathlib import Path
 
+#Настройка MLflow
+mlflow.set_tracking_uri("sqlite:///mlflow.db")
+mlflow.set_experiment("HW5_Iris")
+
 # Загрузка параметров
 with open("params.yaml", "r") as f:
     params = yaml.safe_load(f)
