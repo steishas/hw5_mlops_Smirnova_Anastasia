@@ -1,0 +1,5 @@
+outs:
+- md5: 24563cc014c362aed008cec3416b2ffa
+  size: 6704
+  hash: md5
+  path: iris.parquet
