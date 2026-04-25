@@ -8,34 +8,6 @@
 
 ---
 
-## Структура проекта
-```text
-hw5_mlops_Smirnova_Anastasia/
-├── .dvc/ # Служебная папка DVC
-├── .dvcignore # Исключения DVC
-├── .gitignore # Исключения Git
-├── data/raw/ # Данные (отслеживаются DVC)
-│ ├── .gitignore # Игнорирует *.csv
-│ └── iris.csv.dvc # Метафайл DVC
-├── src/ # Исходный код
-│ ├── prepare.py # Подготовка данных
-│ └── train.py # Обучение с MLflow
-├── feature_repo/feature_repo/ # Конфигурация Feast
-│ ├── feature_store.yaml # Конфиг (PostgreSQL)
-│ └── feature_definitions.py # Entity и FeatureView
-├── notebooks/
-│ └── marimo_demo.py # Демо Marimo
-├── screenshots/ # Скриншоты (7 файлов)
-├── docker-compose-diagram.yml # Архитектура ML-системы
-├── dvc.yaml # DVC пайплайн
-├── dvc.lock # Версии данных
-├── params.yaml # Параметры эксперимента
-├── requirements.txt # Зависимости
-└── README.md # Этот файл
-```
-
----
-
 ## 1. Ограничения Colab vs Marimo
 
 ### 1.1 Скрытое состояние в Colab
