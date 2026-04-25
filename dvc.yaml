@@ -2,7 +2,7 @@ stages:
   prepare:
     cmd: python src/prepare.py
     deps:
-    - data/raw/iris.csv
+    - data/raw/iris.parquet
     - src/prepare.py
     params:
     - prepare.random_state

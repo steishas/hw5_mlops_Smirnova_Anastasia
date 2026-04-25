@@ -1,4 +1,6 @@
 [core]
-    remote = myremote
+    remote = local-cache
 ['remote "myremote"']
     url = /tmp/dvc_storage
+['remote "local-cache"']
+    url = /tmp/dvc-cache-hw5
